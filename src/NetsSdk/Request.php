@@ -1,6 +1,8 @@
 <?php
 
     namespace NetsSdk;
+    
+    use NetsSdk\Price;
 
 
     class Request {
@@ -11,14 +13,14 @@
 
         //https://shop.nets.eu/web/partners/register
 
-        protected $_orderNumber;
-        protected $_amount;
-        protected $_currencyCode;
+        protected $_orderNumber;        
+        protected $_price;
         protected $_customerFirstName;
         protected $_customerLastName;
         protected $_customerEmail;
         protected $_orderDescription;
         protected $_redirectUrl;
+        protected $_isTestEnvironment;
         
         /**
          * Transaction ID is a unique ID identifying each transaction within the Merchant ID in Netaxept at any point. 
@@ -36,13 +38,13 @@
         public function getOrderNumber() {
             return $this->_orderNumber;
         }
-
-        public function getAmount() {
-            return $this->_amount;
-        }
-
-        public function getCurrencyCode() {
-            return $this->_currencyCode;
+        
+        /**
+         * 
+         * @return Price
+         */
+        public function getPrice(){
+            return $this->_price;
         }
 
         public function getCustomerFirstName() {
@@ -92,32 +94,17 @@
             $this->_orderNumber = $orderNumber;
             return $this;
         }
-
-        /**
-         * The transaction amount described as the lowest monetary unit for the given currency without punctuation marks and excluding any fees.
-         * For example: 100,00 NOK is noted as "10000" and 9.99 USD is noted as "999".
-         * The max amount possible for this value is to specify 2147483647, the maximum value of a signed 32 bit integer.
-         * Amount is optional if updateStoredPaymentInfo="true" is supplied for registering the card for future purchases on Easy Payment and Recurring Payments.
-         * 
-         * @param type $amount
-         * @return $this
-         */
-        public function setAmount($amount) {
-            $this->_amount = $amount;
-            return $this;
-        }
         
         /**
-         * The currency code for the transaction amount, following ISO 4217. For example "NOK", "SEK", "DKK", "EUR" and "USD".
-         * Use the Currencies for this (Currencies::NorwegianKrone translates into "NOK").
-         * 
-         * @param String $currencyCode
+         * Sets the price via a price object.
+         * @param Price $price
          * @return $this
          */
-        public function setCurrencyCode($currencyCode) {
-            $this->_currencyCode = $currencyCode;
+        public function setPrice(Price $price){
+            $this->_price = $price;
             return $this;
         }
+
         
         /**
          * Customer's first name.
@@ -175,6 +162,11 @@
         public function setRedirectUrl($redirectUrl) {
             $this->_redirectUrl = $redirectUrl;
             return $this;
+        }
+        
+        public function setIsTestEnvironment($boolean){
+            /* Strips away any data - we just want good ol' bool */
+            $this->_isTestEnvironment = $boolean ? true : false;
         }
 
 
