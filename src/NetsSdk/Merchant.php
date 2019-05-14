@@ -3,8 +3,8 @@
 
     class Merchant {
         
-        protected $_merchantId;
-        protected $_accessToken;
+        public $merchantId;
+        public $token;
 
         public function __construct($merchantId = false, $accessToken = false){
             if($merchantId) { $this->setMerchantId($merchantId); }
@@ -12,13 +12,17 @@
         }
 
         public function setMerchantId($merchantId){
-            $this->_merchantId = $merchantId;
+            $this->merchantId = $merchantId;
             return $this;
         }
 
         public function setAccessToken($accessToken){
-            $this->_accessToken = $accessToken;
+            $this->token = $accessToken;
             return $this;
+        }
+        
+        public function asArray(){
+            return json_decode(json_encode($this), true);
         }
     }
 ?>

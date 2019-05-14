@@ -12,15 +12,26 @@
         protected $_transactionId;
 
         //https://shop.nets.eu/web/partners/register
-
-        protected $_orderNumber;        
+        
+        /* Public will be available when converting to JSON */
+        public $orderNumber;        
+        public $customerFirstName;
+        public $customerLastName;
+        public $customerEmail;
+        public $orderDescription;
+        public $redirectUrl;
+        
+        // Set these via price object
+        public $amount;
+        public $currencyCode;
+        
+        /* Internal props */
         protected $_price;
-        protected $_customerFirstName;
-        protected $_customerLastName;
-        protected $_customerEmail;
-        protected $_orderDescription;
-        protected $_redirectUrl;
         protected $_isTestEnvironment;
+        
+        
+        // need; AMOUNT and CURRENCY CODE as public. Derive from price.
+        
         
         /**
          * Transaction ID is a unique ID identifying each transaction within the Merchant ID in Netaxept at any point. 
@@ -36,7 +47,7 @@
          */
 
         public function getOrderNumber() {
-            return $this->_orderNumber;
+            return $this->orderNumber;
         }
         
         /**
@@ -48,23 +59,27 @@
         }
 
         public function getCustomerFirstName() {
-            return $this->_customerFirstName;
+            return $this->customerFirstName;
         }
 
         public function getCustomerLastName() {
-            return $this->_customerLastName;
+            return $this->customerLastName;
         }
 
         public function getCustomerEmail() {
-            return $this->_customerEmail;
+            return $this->customerEmail;
         }
 
         public function getOrderDescription() {
-            return $this->_orderDescription;
+            return $this->orderDescription;
         }
 
         public function getRedirectUrl() {
-            return $this->_redirectUrl;
+            return $this->redirectUrl;
+        }
+        
+        public function isTestEnvironment(){
+            return $this->_isTestEnvironment;
         }
 
         
@@ -91,17 +106,20 @@
          * @return $this
          */
         public function setOrderNumber($orderNumber) {
-            $this->_orderNumber = $orderNumber;
+            $this->orderNumber = $orderNumber;
             return $this;
         }
         
         /**
          * Sets the price via a price object.
+         * Also sets amount and currencyCode property used when creating transaction.
          * @param Price $price
          * @return $this
          */
         public function setPrice(Price $price){
             $this->_price = $price;
+            $this->amount = $price->getStrippedDecimalInteger();
+            $this->currencyCode = $price->getCurrency();
             return $this;
         }
 
@@ -113,7 +131,7 @@
          * @return $this
          */
         public function setCustomerFirstName($customerFirstName) {
-            $this->_customerFirstName = $customerFirstName;
+            $this->customerFirstName = $customerFirstName;
             return $this;
         }
         
@@ -124,7 +142,7 @@
          * @return $this
          */
         public function setCustomerLastName($customerLastName) {
-            $this->_customerLastName = $customerLastName;
+            $this->customerLastName = $customerLastName;
             return $this;
         }
         
@@ -135,7 +153,7 @@
          * @return $this
          */
         public function setCustomerEmail($customerEmail) {
-            $this->_customerEmail = $customerEmail;
+            $this->customerEmail = $customerEmail;
             return $this;
         }
         
@@ -147,7 +165,7 @@
          * @return $this
          */
         public function setOrderDescription($orderDescription) {
-            $this->_orderDescription = $orderDescription;
+            $this->orderDescription = $orderDescription;
             return $this;
         }
         
@@ -160,13 +178,19 @@
          * @return $this
          */
         public function setRedirectUrl($redirectUrl) {
-            $this->_redirectUrl = $redirectUrl;
+            $this->redirectUrl = $redirectUrl;
             return $this;
         }
         
         public function setIsTestEnvironment($boolean){
             /* Strips away any data - we just want good ol' bool */
             $this->_isTestEnvironment = $boolean ? true : false;
+            return $this;
+        }
+        
+        
+        public function asArray(){
+            return json_decode(json_encode($this), true);
         }
 
 
