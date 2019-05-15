@@ -4,6 +4,7 @@
     
     use NetsSdk\Merchant;
     use NetsSdk\Request;
+    use NetsSdk\NetsException;
     use GuzzleHttp\Client;
 
     class Transaction {
@@ -128,7 +129,8 @@
             
             /* Need to make this more robust */
             if($response->getStatusCode() !== 200 || $parsedData->Error){
-                throw new \Exception($parsedData->Error->Message);
+                throw new NetsException("MSG");
+                //throw new \Exception($parsedData->Error->Message);
             }
             
             return $parsedData;
