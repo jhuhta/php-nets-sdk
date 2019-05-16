@@ -24,5 +24,13 @@
         public function asArray(){
             return json_decode(json_encode($this), true);
         }
+        
+        public function getMerchantId(){
+            return $this->merchantId;
+        }
+        
+        public function getToken(){
+            return $this->token;
+        }
     }
 ?>
