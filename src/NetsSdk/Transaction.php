@@ -9,9 +9,10 @@
 
     class Transaction {
         
+        public $transactionId;
+        
         protected $_merchant;
         protected $_request;
-        
         protected $_client;
         
         const ENDPOINT_URL_PROD = 'https://epayment.nets.eu';
@@ -47,6 +48,7 @@
             
         }
         
+        
         /**
          * Returns the merchant object.
          * @return Merchant
@@ -61,6 +63,10 @@
          */
         public function getRequest() {
             return $this->_request;
+        }
+        
+        public function getTransactionId(){
+            return $this->transactionId;
         }
 
         /**
@@ -92,9 +98,8 @@
          */
         public function register(){
             $response = $this->_performRequest('Register', $this->getRequest()->asArray());
-            $transactionId = $response->TransactionId->__toString();
-            $this->getRequest()->setTransactionId($transactionId);
-            return $this->getRequest();
+            $this->transactionId = $response->TransactionId->__toString();
+            return $this->_transactionId;
         }
         
         public function authorize(){
@@ -107,6 +112,12 @@
         
         public function query(){
             return $this->_runOperation("QUERY");
+        }
+        
+        public function getTerminalUrl(){
+            $merchantId = $this->getMerchant()->getMerchantId();
+            $transactionId = $this->getTransactionId();
+            return $this->_getBaseUrl() . "/Terminal/default.aspx?merchantId=${merchantId}&transactionId=${transactionId}";
         }
         
         protected function _runOperation($operation){
@@ -126,10 +137,14 @@
             ));
             
             $parsedData = simplexml_load_string($response->getBody()->getContents());
+           
             
             /* Need to make this more robust */
             if($response->getStatusCode() !== 200 || $parsedData->Error){
-                throw new NetsException("MSG");
+                $ex = new NetsException();
+                $ex->setResponse((string)$response->getBody());
+                //var_dump($ex);
+                throw $ex;
                 //throw new \Exception($parsedData->Error->Message);
             }
             
@@ -139,13 +154,17 @@
         
         protected function _getClient(){
             if(!isset($this->_client)){
-                $baseUrl = $this->getRequest()->isTestEnvironment() ? self::ENDPOINT_URL_TEST : self::ENDPOINT_URL_PROD;
+                $baseUrl = $this->_getBaseUrl();
                 $this->_client = new Client([
                     'base_uri' => $baseUrl,
                     'timeout'  => 2.0
                 ]);
             }
             return $this->_client;
+        }
+        
+        protected function _getBaseUrl(){
+            return $this->getRequest()->isTestEnvironment() ? self::ENDPOINT_URL_TEST : self::ENDPOINT_URL_PROD;
         }
 
 
