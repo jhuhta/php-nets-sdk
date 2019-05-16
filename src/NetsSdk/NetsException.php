@@ -3,6 +3,7 @@
 namespace NetsSdk;
 
 use Exception;
+use DomDocument;
 
 class NetsException extends Exception {
     
@@ -46,12 +47,14 @@ class NetsException extends Exception {
 
         $dom = new DomDocument();
         $dom->loadXml($responseObj);
-        
         $ex = $dom->getElementsByTagName('Exception')->item(0);
         $error = $dom->getElementsByTagName("Error")->item(0);
         $type = $error->attributes->getNamedItem('type')->value;
-        $message = $error->nodeValue;
+        $message = str_replace("\n", "", trim($error->nodeValue));
+        
+        
         $this->_type = $type;
+        $this->message = $message; 
         
         if($this->_type === 'BBSException'){
             $result = $error->getElementsByTagName('Result')->item(0);
