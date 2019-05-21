@@ -27,7 +27,6 @@
         
         /* Internal props */
         protected $_price;
-        protected $_isTestEnvironment;
         
         
         // need; AMOUNT and CURRENCY CODE as public. Derive from price.
@@ -78,9 +77,6 @@
             return $this->redirectUrl;
         }
         
-        public function isTestEnvironment(){
-            return $this->_isTestEnvironment;
-        }
 
         
 
@@ -179,12 +175,6 @@
          */
         public function setRedirectUrl($redirectUrl) {
             $this->redirectUrl = $redirectUrl;
-            return $this;
-        }
-        
-        public function setIsTestEnvironment($boolean){
-            /* Strips away any data - we just want good ol' bool */
-            $this->_isTestEnvironment = $boolean ? true : false;
             return $this;
         }
         

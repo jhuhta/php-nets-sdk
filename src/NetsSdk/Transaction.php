@@ -15,6 +15,8 @@
         protected $_request;
         protected $_client;
         
+        protected $_isTestEnvironment = false;
+        
         const ENDPOINT_URL_PROD = 'https://epayment.nets.eu';
         const ENDPOINT_URL_TEST = 'https://test.epayment.nets.eu';
         
@@ -26,7 +28,7 @@
          * @param Request $request
          * @throws Exception
          */
-        public function __construct($merchant = false, $request = false){
+        public function __construct($merchant = false, $request = false, $transactionId = false, $isTestEnviroment = false){
             if($merchant !== false){
                 if(!$merchant instanceof Merchant){
                     throw new Exception("Expected either false or a Merchant object");
@@ -44,6 +46,12 @@
                     $this->setRequest($request);
                 }
             }
+
+            if($transactionId !== false){
+                $this->setTransactionId($transactionId);
+            }
+            
+            $this->setIsTestEnvironment($isTestEnviroment);
             
             
         }
@@ -67,6 +75,20 @@
         
         public function getTransactionId(){
             return $this->transactionId;
+        }
+
+        public function setTransactionId($transactionId){
+            $this->transactionId = $transactionId;
+            return $this;
+        }
+        
+        public function setIsTestEnvironment($bool){
+            $this->_isTestEnvironment = $bool;
+            return $this;
+        }
+        
+        public function isTestEnvironment(){
+            return $this->_isTestEnvironment;
         }
 
         /**
@@ -111,7 +133,9 @@
         }
         
         public function query(){
-            return $this->_runOperation("QUERY");
+            return $this->_performRequest('Query', array(
+                'transactionId' => $this->transactionId
+            ));
         }
         
         public function getTerminalUrl(){
@@ -122,7 +146,7 @@
         
         protected function _runOperation($operation){
              return $this->_performRequest('Process', array(
-                'transactionId' => $this->getRequest()->getTransactionId(),
+                'transactionId' => $this->transactionId,
                 'operation' => $operation
             ));
         }
@@ -164,7 +188,7 @@
         }
         
         protected function _getBaseUrl(){
-            return $this->getRequest()->isTestEnvironment() ? self::ENDPOINT_URL_TEST : self::ENDPOINT_URL_PROD;
+            return $this->_isTestEnvironment ? self::ENDPOINT_URL_TEST : self::ENDPOINT_URL_PROD;
         }
 
 
