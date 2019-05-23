@@ -4,8 +4,12 @@
     
     use NetsSdk\Merchant;
     use NetsSdk\Request;
-    use NetsSdk\NetsException;
+    use NetsSdk\ExceptionResolver;
+
+    use NetsSdk\Exceptions\TransactionNotFoundException;
+
     use GuzzleHttp\Client;
+    use DomDocument;
 
     class Transaction {
         
@@ -135,7 +139,24 @@
         public function query(){
             return $this->_performRequest('Query', array(
                 'transactionId' => $this->transactionId
-            ));
+            ), 'GET', true);
+        }
+        
+        public function isAuthorized($query = null){
+            if(!isset($query)){ $query = $this->query();}
+            $stringBoolean = strtolower($query->Summary->Authorized->__toString());
+            $actualBool = $stringBoolean === 'true' ? true : false;
+            return $actualBool;
+        }
+        
+        
+        public function getCapturedAmount($query = null){
+            if(!isset($query)){ $query = $this->query();}
+            return (int) $query->Summary->AmountCaptured->__toString();   
+        }
+        
+        public function isFullAmountCredited($query = null){
+            
         }
         
         public function getTerminalUrl(){
@@ -151,7 +172,7 @@
             ));
         }
         
-        protected function _performRequest($endpointName, $params, $method = 'POST'){
+        protected function _performRequest($endpointName, $params, $method = 'POST', $ignoreError = false){
             $endpoint = "/Netaxept/${endpointName}.aspx";
             
             $paramsWithAuth = array_merge($this->getMerchant()->asArray(), $params);
@@ -161,15 +182,10 @@
             ));
             
             $parsedData = simplexml_load_string($response->getBody()->getContents());
-           
-            
-            /* Need to make this more robust */
-            if($response->getStatusCode() !== 200 || $parsedData->Error){
-                $ex = new NetsException();
-                $ex->setResponse((string)$response->getBody());
-                //var_dump($ex);
-                throw $ex;
-                //throw new \Exception($parsedData->Error->Message);
+        
+            // Check if topmost object is indeed an error.
+            if($parsedData->getName() === 'Exception'){
+                return new ExceptionResolver((string)$response->getBody());
             }
             
             return $parsedData;
