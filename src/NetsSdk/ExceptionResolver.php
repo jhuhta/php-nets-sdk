@@ -134,6 +134,9 @@
                 case 'QueryException':
                     throw new QueryException($msg);
                 break;
+
+                default:
+                    throw new GenericException($msg);
             }
 
         }
