@@ -12,7 +12,9 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.2.0",
-        "guzzlehttp/guzzle": "^6.3@dev"
+        "guzzlehttp/guzzle": "^6.3@dev",
+        "ext-simplexml": "*",
+        "ext-dom": "*"
     },
     "autoload": {
         "psr-0": {
