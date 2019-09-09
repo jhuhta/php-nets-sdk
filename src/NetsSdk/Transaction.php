@@ -357,6 +357,7 @@ class Transaction {
   public function getTerminalUrl() {
     $merchantId = $this->getMerchant()->getMerchantId();
     $transactionId = $this->getTransactionId();
+
     return $this->_getBaseUrl() . "/Terminal/default.aspx?merchantId=${merchantId}&transactionId=${transactionId}";
   }
 

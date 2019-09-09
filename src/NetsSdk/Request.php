@@ -30,7 +30,13 @@
         
         
         // need; AMOUNT and CURRENCY CODE as public. Derive from price.
-        
+
+      /**
+       * The transaction language.
+       *
+       * @var string
+       */
+      public $language = 'en_GB';
         
         /**
          * Transaction ID is a unique ID identifying each transaction within the Merchant ID in Netaxept at any point. 
@@ -177,8 +183,33 @@
             $this->redirectUrl = $redirectUrl;
             return $this;
         }
-        
-        
+
+
+    /**
+     * Sets the transaction language.
+     *
+     * @param string $language
+     *   The locale string.
+     *
+     * @return $this
+     */
+    public function setLanguage(string $language) {
+      $this->language = $language;
+      return $this;
+    }
+
+    /**
+     * Gets the transaction language.
+     *
+     * @return string
+     *   The language as a locale string.
+     */
+    public function getLanguage() {
+      return $this->language;
+    }
+
+
+
         public function asArray(){
             return json_decode(json_encode($this), true);
         }
