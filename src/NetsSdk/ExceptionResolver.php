@@ -6,7 +6,7 @@ use DomDocument;
 use NetsSdk\Exceptions\AuthenticationException;
 use NetsSdk\Exceptions\BBSExceptions\CardExpiredException;
 use NetsSdk\Exceptions\BBSExceptions\DeniedBy3DSecureAuthenticationException;
-use NetsSdk\Exceptions\BBSExceptions\GenericException;
+use NetsSdk\Exceptions\BBSExceptions\GenericException as BBSGenericException;
 use NetsSdk\Exceptions\BBSExceptions\InternalFailureException;
 use NetsSdk\Exceptions\BBSExceptions\InvalidAmountException;
 use NetsSdk\Exceptions\BBSExceptions\InvalidCardNumberException;
@@ -32,7 +32,7 @@ use NetsSdk\Exceptions\BBSExceptions\TransactionAlreadyReversedException;
 use NetsSdk\Exceptions\BBSExceptions\TransactionNotFoundException;
 use NetsSdk\Exceptions\BBSExceptions\TransactionReachedMerchantTimoutException;
 use NetsSdk\Exceptions\BBSExceptions\UnknownBBSException;
-use NetsSdk\Exceptions\GenericError;
+use NetsSdk\Exceptions\GenericException;
 use NetsSdk\Exceptions\MerchantTranslationException;
 use NetsSdk\Exceptions\NotSupportedException;
 use NetsSdk\Exceptions\QueryException;
@@ -88,6 +88,7 @@ class ExceptionResolver {
    * @throws \NetsSdk\Exceptions\SecurityException
    * @throws \NetsSdk\Exceptions\UniqueTransactionIdException
    * @throws \NetsSdk\Exceptions\ValidationException
+   * @throws \NetsSdk\Exceptions\GenericException
    */
   public function __construct($rawXmlStringFromApi) {
     $dom = new DomDocument();
@@ -186,7 +187,7 @@ class ExceptionResolver {
         break;
 
       case '99':
-        $e = new GenericException($msg, $code);
+        $e = new BBSGenericException($msg, $code);
         break;
 
       case 'MZ':
