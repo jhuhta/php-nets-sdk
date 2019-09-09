@@ -125,7 +125,7 @@
         public function register(){
             $response = $this->_performRequest('Register', $this->getRequest()->asArray());
             $this->transactionId = $response->TransactionId->__toString();
-            return $this->_transactionId;
+            return $this->transactionId;
         }
         
         public function authorize(){
