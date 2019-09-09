@@ -49,7 +49,48 @@
      */
 
     class ExceptionResolver {
-        
+
+      /**
+       * ExceptionResolver constructor.
+       *
+       * @param $rawXmlStringFromApi
+       *   The XML response string.
+       *
+       * @throws \NetsSdk\Exceptions\AuthenticationException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\CardExpiredException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\DeniedBy3DSecureAuthenticationException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\GenericException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\InternalFailureException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidAmountException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidCardNumberException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidKidException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidTransactionException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedConfigIssuesContactNetaxeptException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedContactIssuerException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedFormatErrorException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedInvalidMerchantException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedLateResponseTryAgainException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedNoCardRecordException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedNoCheckingAccountException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedSystemMalfunctionException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTemporarilyUnavailableException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTransactionNotPermittedException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTryAgainException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\NoTransactionException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\OriginalTransactionRejectedException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionAlreadyProcessedException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionAlreadyReversedException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionNotFoundException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionReachedMerchantTimoutException
+       * @throws \NetsSdk\Exceptions\BBSExceptions\UnknownBBSException
+       * @throws \NetsSdk\Exceptions\MerchantTranslationException
+       * @throws \NetsSdk\Exceptions\NotSupportedException
+       * @throws \NetsSdk\Exceptions\QueryException
+       * @throws \NetsSdk\Exceptions\SecurityException
+       * @throws \NetsSdk\Exceptions\UniqueTransactionIdException
+       * @throws \NetsSdk\Exceptions\ValidationException
+       */
         public function __construct($rawXmlStringFromApi){
             $dom = new DomDocument();
             $dom->loadXml($rawXmlStringFromApi);
@@ -263,4 +304,3 @@
             throw $e;
         }
     }
-?>
