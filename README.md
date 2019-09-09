@@ -94,6 +94,10 @@ $transaction = $transaction->query();
 
 ```
 
+## Requirements
+
+Requires PHP 7.
+
 ## Useful resources
 https://www.youtube.com/watch?v=ewRjZoRtu0Y&t=56
 
