@@ -20,6 +20,9 @@
         "ext-simplexml": "*",
         "ext-dom": "*"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.4.1"
+    },
     "autoload": {
         "psr-4": {
             "NetsSdk\\": "src/"
