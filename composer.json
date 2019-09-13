@@ -1,5 +1,5 @@
 {
-    "name": "steffenz/php-nets-sdk",
+    "name": "jhuhta/php-nets-sdk",
     "description": "Unofficial PHP SDK to make it easy to interact with Nets (nordic payment provider) API.",
     "type": "sdk",
     "license": "MIT",
@@ -7,6 +7,10 @@
         {
             "name": "Steffen Martinsen",
             "email": "steffen@steffenmedia.no"
+        },
+        {
+            "name": "Jukka Huhta",
+            "email": "jukka.huhta@siili.com"
         }
     ],
     "minimum-stability": "dev",
@@ -17,8 +21,8 @@
         "ext-dom": "*"
     },
     "autoload": {
-        "psr-0": {
-            "NetsSdk": "src/"
+        "psr-4": {
+            "NetsSdk\\": "src/"
         }
     }
 }
