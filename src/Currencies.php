@@ -14,8 +14,6 @@ namespace NetsSdk;
  * @see https://en.wikipedia.org/wiki/ISO_4217
  * 
  */
-
-
 abstract class Currencies {
     const NorwegianKrone = 'NOK';
     const DanishKrone = 'DKK';
@@ -23,4 +21,3 @@ abstract class Currencies {
     const Euro = "EUR";
     const AmericanDollar = "USD";
 }
-    
