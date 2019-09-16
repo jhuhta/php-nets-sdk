@@ -2,6 +2,7 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
-
-class GenericException extends NetsException { }
+/**
+ * The GenericException class.
+ */
+class GenericException extends NetsException {}

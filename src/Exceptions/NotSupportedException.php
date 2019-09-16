@@ -2,6 +2,7 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
-
-class NotSupportedException extends NetsException { }
+/**
+ * The NotSupportedException class.
+ */
+class NotSupportedException extends NetsException {}

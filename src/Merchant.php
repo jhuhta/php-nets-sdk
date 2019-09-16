@@ -66,12 +66,12 @@ class Merchant {
   /**
    * Sets the merchant id.
    *
-   * @param $merchantId
+   * @param string $merchantId
    *   The merchant id.
    *
    * @return $this
    */
-  public function setMerchantId($merchantId) {
+  public function setMerchantId(string $merchantId) {
     $this->merchantId = $merchantId;
     return $this;
   }

@@ -2,6 +2,7 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
-
-class QueryException extends NetsException { }
+/**
+ * The QueryException class.
+ */
+class QueryException extends NetsException {}

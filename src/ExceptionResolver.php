@@ -19,7 +19,7 @@ use NetsSdk\Exceptions\ValidationException;
  * Tries to figure out what exception occured, and throws a proper exception
  * that can be handled. Exceptions has been implemented based on the
  * documentation (which might change)
- * https://shop.nets.eu/web/partners/exceptions
+ * https://shop.nets.eu/web/partners/exceptions.
  *
  * This class doesn't instantiate but throws a resolved exception instead.
  */
@@ -28,7 +28,7 @@ class ExceptionResolver {
   /**
    * ExceptionResolver constructor.
    *
-   * @param $rawXmlStringFromApi
+   * @param string $rawXmlStringFromApi
    *   The XML response string.
    *
    * @throws \NetsSdk\Exceptions\AuthenticationException
@@ -41,10 +41,10 @@ class ExceptionResolver {
    * @throws \NetsSdk\Exceptions\GenericException
    * @throws \NetsSdk\Exceptions\BBSException
    */
-  public function __construct($rawXmlStringFromApi) {
+  public function __construct(string $rawXmlStringFromApi) {
     $dom = new DomDocument();
     $dom->loadXml($rawXmlStringFromApi);
-    // Error tag
+    // Error tag.
     $error = $dom->getElementsByTagName("Error")->item(0);
     // Error tag's type attribute.
     $type = $error->attributes->getNamedItem('type')->value;
@@ -87,9 +87,11 @@ class ExceptionResolver {
   }
 
   /**
+   * Resolves the BBSException messages.
+   *
    * Handles the various BBSExceptions and tries to serve as much details as
    * possible. Exceptions and responses are based of the documentation (which
-   * might change) https://shop.nets.eu/web/partners/response-codes
+   * might change) https://shop.nets.eu/web/partners/response-codes.
    *
    * We're not differentiating between BBSException types, as the error codes
    * overlap and we're not able to reliably resolve the correct code.
@@ -106,4 +108,5 @@ class ExceptionResolver {
     $e->setPropertiesFromXml($result);
     throw $e;
   }
+
 }

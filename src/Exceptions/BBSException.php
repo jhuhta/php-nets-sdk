@@ -2,25 +2,71 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
+/**
+ * Class BBSException.
+ */
+class BBSException extends NetsException {
 
-class BBSException extends NetsException { 
+  /**
+   * The issuer id.
+   *
+   * @var string
+   */
+  public $issuerId;
 
-    public $issuerId;
-    public $responseCode;
-    public $responseText;
-    public $responseSrc;
-    public $transactionId;
-    public $merchantId;
-    public $messageId;
+  /**
+   * The response code.
+   *
+   * @var string
+   */
+  public $responseCode;
 
-    public function setPropertiesFromXml($obj){  
-        $this->issuerId = $obj->IssuerId->__toString();
-        $this->responseCode = $obj->ResponseCode->__toString();
-        $this->responseText = $obj->ResponseText->__toString();
-        $this->responseSrc = $obj->ResponseSource->__toString();
-        $this->transactionId = $obj->TransactionId->__toString();
-        $this->merchantId = $obj->MerchantId->__toString();
-        $this->messageId = $obj->MessageId->__toString();
-    }
+  /**
+   * The response text.
+   *
+   * @var string
+   */
+  public $responseText;
+
+  /**
+   * The response source.
+   *
+   * @var string
+   */
+  public $responseSrc;
+
+  /**
+   * The transaction id.
+   *
+   * @var string
+   */
+  public $transactionId;
+
+  /**
+   * The merchant id.
+   *
+   * @var string
+   */
+  public $merchantId;
+
+  /**
+   * The message id.
+   *
+   * @var string
+   */
+  public $messageId;
+
+  /**
+   * Sets the public properties according to the values of an XML object.
+   */
+  public function setPropertiesFromXml($obj) {
+    $this->issuerId = $obj->IssuerId->__toString();
+    $this->responseCode = $obj->ResponseCode->__toString();
+    $this->responseText = $obj->ResponseText->__toString();
+    $this->responseSrc = $obj->ResponseSource->__toString();
+    $this->transactionId = $obj->TransactionId->__toString();
+    $this->merchantId = $obj->MerchantId->__toString();
+    $this->messageId = $obj->MessageId->__toString();
+  }
+
 }

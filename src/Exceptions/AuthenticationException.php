@@ -2,6 +2,7 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
-
-class AuthenticationException extends NetsException { }
+/**
+ * The AuthenticationException class.
+ */
+class AuthenticationException extends NetsException {}

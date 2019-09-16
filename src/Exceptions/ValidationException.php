@@ -2,6 +2,7 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
-
-class ValidationException extends NetsException { }
+/**
+ * The ValidationException class.
+ */
+class ValidationException extends NetsException {}

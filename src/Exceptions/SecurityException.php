@@ -2,6 +2,7 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
-
-class SecurityException extends NetsException { }
+/**
+ * The SecurityException class.
+ */
+class SecurityException extends NetsException {}

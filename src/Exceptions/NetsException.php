@@ -4,4 +4,7 @@ namespace NetsSdk\Exceptions;
 
 use Exception;
 
-class NetsException extends Exception { }
+/**
+ * The NetsException class.
+ */
+class NetsException extends Exception {}

@@ -2,6 +2,7 @@
 
 namespace NetsSdk\Exceptions;
 
-use NetsSdk\Exceptions\NetsException;
-
-class UniqueTransactionIdException extends NetsException { }
+/**
+ * The UniqueTransactionIdException class.
+ */
+class UniqueTransactionIdException extends NetsException {}

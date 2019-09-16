@@ -2,53 +2,102 @@
 
 namespace NetsSdk;
 
+/**
+ * The Price class.
+ */
 class Price {
-    
-    protected $amount;
-    protected $currency;
-    
-    public function __construct($amount = false, $currency = false){
-        if($amount)   { $this->setAmount($amount); }
-        if($currency) { $this->setCurrency($currency); }
-    }
-    
-    
-    public function getAmount() {
-        return $this->amount;
-    }
 
-    public function getCurrency() {
-        return $this->currency;
-    }
-    
-    /**
-     * Set the price amount. 
-     * Use punctuation (.) instead of comma (,) on decimals.
-     * For example 9 dollars and 99 cents is expressed 9.99.
-     * 
-     * @param float $amount
-     * @return $this
-     */
-    public function setAmount($amount) {
-        $this->amount = floatval($amount);
-        return $this;
-    }
+  /**
+   * The amount of this price.
+   *
+   * @var float
+   */
+  protected $amount;
 
-    public function setCurrency($currency) {
-        $this->currency = $currency;
-        return $this;
-    }
-    
-    /**
-     * Strips away the decimal, but keeps all the numbers.
-     * This is the way the Nets REST API needs the prices formatted.
-     *  
-     * @return int
-     */
-    public function getStrippedDecimalInteger(){
-        return (int) str_replace('.', '', $this->getAmount());
-    }
+  /**
+   * The currency code of this price.
+   *
+   * @var string
+   */
+  protected $currency;
 
+  /**
+   * Price constructor.
+   *
+   * @param float $amount
+   *   The amount.
+   * @param string $currency
+   *   The currency code.
+   */
+  public function __construct($amount = FALSE, $currency = FALSE) {
+    if ($amount) {
+      $this->setAmount($amount);
+    }
+    if ($currency) {
+      $this->setCurrency($currency);
+    }
+  }
 
-    
+  /**
+   * Gets the currency of this price.
+   *
+   * @return string
+   *   The currency of this price.
+   */
+  public function getCurrency() {
+    return $this->currency;
+  }
+
+  /**
+   * Sets the currency code.
+   *
+   * @param string $currency
+   *   The currency object.
+   *
+   * @return $this
+   */
+  public function setCurrency(string $currency) {
+    $this->currency = $currency;
+    return $this;
+  }
+
+  /**
+   * Returns Nets API compatible amount representation.
+   *
+   * Strips away the decimal separator, but keeps all the numbers.
+   * This is the way the Nets REST API needs the prices formatted.
+   *
+   * @return int
+   *   The int amount, with decimal dot stripped away.
+   */
+  public function getStrippedDecimalInteger() {
+    return (int) str_replace('.', '', $this->getAmount());
+  }
+
+  /**
+   * Gets the amount.
+   *
+   * @return float
+   *   The amount.
+   */
+  public function getAmount() {
+    return $this->amount;
+  }
+
+  /**
+   * Sets the price amount.
+   *
+   * Use punctuation (.) instead of comma (,) on decimals.
+   * For example 9 dollars and 99 cents is expressed 9.99.
+   *
+   * @param string $amount
+   *   The amount as string, will be made a float.
+   *
+   * @return $this
+   */
+  public function setAmount(string $amount) {
+    $this->amount = floatval($amount);
+    return $this;
+  }
+
 }

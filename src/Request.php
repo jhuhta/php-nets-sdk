@@ -1,220 +1,352 @@
 <?php
 
-    namespace NetsSdk;
-    
-    use NetsSdk\Price;
+namespace NetsSdk;
 
+/**
+ * Class Request.
+ *
+ * This class doesn't set any properties via constructor but uses setter methods
+ * instead.
+ *
+ * @see https://shop.nets.eu/web/partners/register
+ */
+class Request {
 
-    class Request {
-        
-        // Merchant+Token comes from Merchant Object
+  use ArrayRepresentationTrait;
 
-        protected $transactionId;
+  /**
+   * The order number.
+   *
+   * @var string
+   */
+  protected $orderNumber;
 
-        //https://shop.nets.eu/web/partners/register
-        
-        /* Public will be available when converting to JSON */
-        public $orderNumber;        
-        public $customerFirstName;
-        public $customerLastName;
-        public $customerEmail;
-        public $orderDescription;
-        public $redirectUrl;
-        
-        // Set these via price object
-        public $amount;
-        public $currencyCode;
-        
-        /* Internal props */
-        protected $price;
-        
-        
-        // need; AMOUNT and CURRENCY CODE as public. Derive from price.
+  /**
+   * The customer first name.
+   *
+   * @var string
+   */
+  protected $customerFirstName;
 
-      /**
-       * The transaction language.
-       *
-       * @var string
-       */
-      public $language = 'en_GB';
-        
-        /**
-         * Transaction ID is a unique ID identifying each transaction within the Merchant ID in Netaxept at any point. 
-         * @return String
-         */
-        public function getTransactionId() {
-            return $this->transactionId;
-        }
-        
-        /**
-         * A transaction identifier defined by the merchant.
-         * @return String
-         */
+  /**
+   * The customer last name.
+   *
+   * @var string
+   */
+  protected $customerLastName;
 
-        public function getOrderNumber() {
-            return $this->orderNumber;
-        }
-        
-        /**
-         * 
-         * @return Price
-         */
-        public function getPrice(){
-            return $this->price;
-        }
+  /**
+   * The customer email.
+   *
+   * @var string
+   */
+  protected $customerEmail;
 
-        public function getCustomerFirstName() {
-            return $this->customerFirstName;
-        }
+  /**
+   * The order description.
+   *
+   * @var string
+   */
+  protected $orderDescription;
 
-        public function getCustomerLastName() {
-            return $this->customerLastName;
-        }
+  /**
+   * The redirect url.
+   *
+   * @var string
+   */
+  protected $redirectUrl;
 
-        public function getCustomerEmail() {
-            return $this->customerEmail;
-        }
+  /**
+   * The amount.
+   *
+   * Not to be accessed directly, but through the price property.
+   *
+   * @var string
+   */
+  protected $amount;
 
-        public function getOrderDescription() {
-            return $this->orderDescription;
-        }
+  /**
+   * The currency code..
+   *
+   * Not to be accessed directly, but through the price property..
+   *
+   * @var string
+   */
+  protected $currencyCode;
 
-        public function getRedirectUrl() {
-            return $this->redirectUrl;
-        }
-        
+  /**
+   * The transaction language.
+   *
+   * @var string
+   */
+  protected $language = 'en_GB';
 
-        
+  /**
+   * The transaction id.
+   *
+   * @var string
+   */
+  protected $transactionId;
 
-        
-        /**
-         * Transaction ID is a unique ID identifying each transaction within the Merchant ID in Netaxept at any point. 
-         * If Transaction ID is omitted, Netaxept will generate a unique Transaction ID for the transaction.
-         * 
-         * @param String $transactionId (Max Length is 32)
-         * @return $this
-         */
-        public function setTransactionId($transactionId) {
-            $this->transactionId = $transactionId;
-            return $this;
-        }
+  /**
+   * The price object.
+   *
+   * @var \NetsSdk\Price
+   */
+  protected $price;
 
-        /**
-         * A transaction identifier defined by the merchant. 
-         * Nets recommends to generate each transaction a unique order number but if wanted the same order number can be used several times. 
-         * Digits and letters are allowed except special characters and scandinavian letters like Æ Ø Å Ä Ö.
-         * 
-         * @param type $orderNumber
-         * @return $this
-         */
-        public function setOrderNumber($orderNumber) {
-            $this->orderNumber = $orderNumber;
-            return $this;
-        }
-        
-        /**
-         * Sets the price via a price object.
-         * Also sets amount and currencyCode property used when creating transaction.
-         * @param Price $price
-         * @return $this
-         */
-        public function setPrice(Price $price){
-            $this->price = $price;
-            $this->amount = $price->getStrippedDecimalInteger();
-            $this->currencyCode = $price->getCurrency();
-            return $this;
-        }
+  /**
+   * Gets the transaction id.
+   *
+   * Transaction ID is a unique ID identifying each transaction within the
+   * Merchant ID in Netaxept at any point.
+   *
+   * @return string
+   *   The transaction id.
+   */
+  public function getTransactionId() {
+    return $this->transactionId;
+  }
 
-        
-        /**
-         * Customer's first name.
-         * 
-         * @param String $customerFirstName (Max Length: 64)
-         * @return $this
-         */
-        public function setCustomerFirstName($customerFirstName) {
-            $this->customerFirstName = $customerFirstName;
-            return $this;
-        }
-        
-        /**
-         * Customer's last name.
-         * 
-         * @param type $customerLastName (Max Length: 64)
-         * @return $this
-         */
-        public function setCustomerLastName($customerLastName) {
-            $this->customerLastName = $customerLastName;
-            return $this;
-        }
-        
-        /**
-         * The customer's email address.
-         * 
-         * @param String $customerEmail (Max Length: 128)
-         * @return $this
-         */
-        public function setCustomerEmail($customerEmail) {
-            $this->customerEmail = $customerEmail;
-            return $this;
-        }
-        
-        /**
-         * Free-format textual description determined by the merchant for the transaction. 
-         * This can be HTML-formatted. If you are using Netaxept hosted payment window, this description will appear in the payment window for the customer. 
-         * Unlike the other fields, the order description will not cause the call to fail if it exceeds its maximum length, rather the field will be truncated to its maximum length.
-         * @param String $orderDescription (Max Length: 1500)
-         * @return $this
-         */
-        public function setOrderDescription($orderDescription) {
-            $this->orderDescription = $orderDescription;
-            return $this;
-        }
-        
-        /**
-         * Indicates where to send the customer when the transaction after the Register call and Terminal phase. 
-         * This URL can contain GET parameters.
-         * The redirect URL is optional when using "AutoAuth", and shouldn't be used with Call centre transactions.
-         * 
-         * @param String $redirectUrl (Max Length: 256)
-         * @return $this
-         */
-        public function setRedirectUrl($redirectUrl) {
-            $this->redirectUrl = $redirectUrl;
-            return $this;
-        }
+  /**
+   * Sets the transaction id.
+   *
+   * Transaction ID is a unique ID identifying each transaction within the
+   * Merchant ID in Netaxept at any point. If Transaction ID is omitted,
+   * Netaxept will generate a unique Transaction ID for the transaction.
+   *
+   * @param string $transactionId
+   *   The transaction id, max length = 32.
+   *
+   * @return $this
+   */
+  public function setTransactionId(string $transactionId) {
+    $this->transactionId = $this->truncate($transactionId, 32);
+    return $this;
+  }
 
+  /**
+   * A transaction identifier defined by the merchant.
+   *
+   * @return string
+   *   The order number.
+   */
+  public function getOrderNumber() {
+    return $this->orderNumber;
+  }
 
-    /**
-     * Sets the transaction language.
-     *
-     * @param string $language
-     *   The locale string.
-     *
-     * @return $this
-     */
-    public function setLanguage(string $language) {
-      $this->language = $language;
-      return $this;
+  /**
+   * A transaction identifier defined by the merchant.
+   *
+   * Nets recommends to generate each transaction a unique order number but if
+   * wanted the same order number can be used several times. Digits and letters
+   * are allowed except special characters and scandinavian letters like Æ Ø Å
+   * Ä Ö.
+   *
+   * @param string $orderNumber
+   *   The order number string.
+   *
+   * @return $this
+   */
+  public function setOrderNumber(string $orderNumber) {
+    $this->orderNumber = $orderNumber;
+    return $this;
+  }
+
+  /**
+   * Gets the Price object.
+   *
+   * @return Price
+   *   The price.
+   */
+  public function getPrice() {
+    return $this->price;
+  }
+
+  /**
+   * Sets the price via a price object.
+   *
+   * Also sets amount and currencyCode property used when creating transaction.
+   * This is important when building a array representation of this object.
+   *
+   * @param Price $price
+   *   The Price object.
+   *
+   * @return $this
+   */
+  public function setPrice(Price $price) {
+    $this->price = $price;
+    $this->amount = $price->getStrippedDecimalInteger();
+    $this->currencyCode = $price->getCurrency();
+    return $this;
+  }
+
+  /**
+   * Gets the customer first name.
+   *
+   * @return string
+   *   The customer first name.
+   */
+  public function getCustomerFirstName() {
+    return $this->customerFirstName;
+  }
+
+  /**
+   * Sets the customer's first name.
+   *
+   * @param string $customerFirstName
+   *   The first name, max length = 64.
+   *
+   * @return $this
+   */
+  public function setCustomerFirstName(string $customerFirstName) {
+    $this->customerFirstName = $this->truncate($customerFirstName, 64);
+    return $this;
+  }
+
+  /**
+   * Gets the customer first name.
+   *
+   * @return string
+   *   The first name.
+   */
+  public function getCustomerLastName() {
+    return $this->customerLastName;
+  }
+
+  /**
+   * Sets the customer's last name.
+   *
+   * @param string $customerLastName
+   *   The last name, max length = 64.
+   *
+   * @return $this
+   */
+  public function setCustomerLastName(string $customerLastName) {
+    $this->customerLastName = $this->truncate($customerLastName, 64);
+    return $this;
+  }
+
+  /**
+   * Gets the customer email address.
+   *
+   * @return string
+   *   The email.
+   */
+  public function getCustomerEmail() {
+    return $this->customerEmail;
+  }
+
+  /**
+   * Sets the customer's email address.
+   *
+   * @param string $customerEmail
+   *   (Max Length: 128)
+   *
+   * @return $this
+   */
+  public function setCustomerEmail($customerEmail) {
+    $this->customerEmail = $this->truncate($customerEmail, 128);
+    return $this;
+  }
+
+  /**
+   * Gets the order description.
+   *
+   * @return string
+   *   The order description.
+   */
+  public function getOrderDescription() {
+    return $this->orderDescription;
+  }
+
+  /**
+   * Sets the order description.
+   *
+   * Free-format textual description determined by the merchant for the
+   * transaction. This can be HTML-formatted. If you are using Netaxept hosted
+   * payment window, this description will appear in the payment window for the
+   * customer. Unlike the other fields, the order description will not cause
+   * the call to fail if it exceeds its maximum length, rather the field will
+   * be truncated to its maximum length.
+   *
+   * @param string $orderDescription
+   *   The order description, max length 1500.
+   *
+   * @return $this
+   */
+  public function setOrderDescription($orderDescription) {
+    $this->orderDescription = $this->truncate($orderDescription, 1500);
+    return $this;
+  }
+
+  /**
+   * Gets the redirect url.
+   *
+   * @return string
+   *   The url.
+   */
+  public function getRedirectUrl() {
+    return $this->redirectUrl;
+  }
+
+  /**
+   * Sets the redirect url.
+   *
+   * Indicates where to send the customer when the transaction after the
+   * Register call and Terminal phase. This URL can contain GET parameters. The
+   * redirect URL is optional when using "AutoAuth", and shouldn't be used with
+   * Call centre transactions.
+   *
+   * @param string $redirectUrl
+   *   The redirect url, max length 256.
+   *
+   * @return $this
+   */
+  public function setRedirectUrl($redirectUrl) {
+    $this->redirectUrl = $this->truncate($redirectUrl, 256);
+    return $this;
+  }
+
+  /**
+   * Gets the transaction language.
+   *
+   * @return string
+   *   The language as a locale string.
+   */
+  public function getLanguage() {
+    return $this->language;
+  }
+
+  /**
+   * Sets the transaction language.
+   *
+   * @param string $language
+   *   The locale string.
+   *
+   * @return $this
+   */
+  public function setLanguage(string $language) {
+    $this->language = $language;
+    return $this;
+  }
+
+  /**
+   * Helper method to cut a string, just for not repeating ourselves.
+   *
+   * @param string $string
+   *   The string to cut.
+   * @param int $length
+   *   The length over which the string is truncated.
+   *
+   * @return string
+   *   The truncated string, or original if it was shorter already.
+   */
+  private function truncate(string $string, int $length) {
+    if (strlen($string) > $length) {
+      return substr($string, 0, $length) || '';
     }
+    return $string;
+  }
 
-    /**
-     * Gets the transaction language.
-     *
-     * @return string
-     *   The language as a locale string.
-     */
-    public function getLanguage() {
-      return $this->language;
-    }
-
-
-
-        public function asArray(){
-            return json_decode(json_encode($this), true);
-        }
-
-
-
-        
-    }
+}

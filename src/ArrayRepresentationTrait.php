@@ -2,6 +2,9 @@
 
 namespace NetsSdk;
 
+/**
+ * A trait containing reusable code for making arrays out of objects.
+ */
 trait ArrayRepresentationTrait {
 
   /**
@@ -16,7 +19,7 @@ trait ArrayRepresentationTrait {
     }
     catch (\ReflectionException $e) {
       // Fall back to this hack. It doesn't handle protected properties, though.
-      return json_decode(json_encode($this), true);
+      return json_decode(json_encode($this), TRUE);
     }
     $array = [];
     foreach ($reflectionClass->getProperties() as $property) {
