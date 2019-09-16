@@ -32,28 +32,28 @@ class Transaction {
    *
    * @var \NetsSdk\Merchant
    */
-  protected $_merchant;
+  protected $merchant;
 
   /**
    * The Request object.
    *
    * @var \NetsSdk\Request
    */
-  protected $_request;
+  protected $request;
 
   /**
    * The HTTP client.
    *
    * @var \GuzzleHttp\Client
    */
-  protected $_client;
+  protected $client;
 
   /**
    * Whether we're running against test environment.
    *
    * @var bool
    */
-  protected $_isTestEnvironment = FALSE;
+  protected $isTestEnvironment = FALSE;
 
   /**
    * Creates a new transaction.
@@ -107,7 +107,7 @@ class Transaction {
    * @return $this
    */
   public function setIsTestEnvironment(bool $isTest) {
-    $this->_isTestEnvironment = $isTest;
+    $this->isTestEnvironment = $isTest;
     return $this;
   }
 
@@ -118,7 +118,7 @@ class Transaction {
    *   Is it test or not.
    */
   public function isTestEnvironment() {
-    return $this->_isTestEnvironment;
+    return $this->isTestEnvironment;
   }
 
   /**
@@ -131,7 +131,7 @@ class Transaction {
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function register() {
-    $response = $this->_performRequest('Register', $this->getRequest()
+    $response = $this->performRequest('Register', $this->getRequest()
       ->asArray());
     $this->transactionId = $response->TransactionId->__toString();
     return $this->transactionId;
@@ -155,12 +155,12 @@ class Transaction {
    * @throws \GuzzleHttp\Exception\GuzzleException
    * @throws \NetsSdk\Exceptions\NetsException
    */
-  protected function _performRequest(string $endpointName, array $params, string $method = 'POST', $ignoreError = FALSE) {
+  protected function performRequest(string $endpointName, array $params, string $method = 'POST', $ignoreError = FALSE) {
     $endpoint = "/Netaxept/${endpointName}.aspx";
 
     $paramsWithAuth = array_merge($this->getMerchant()->asArray(), $params);
 
-    $response = $this->_getClient()->request($method, $endpoint, [
+    $response = $this->getClient()->request($method, $endpoint, [
       'form_params' => $paramsWithAuth,
     ]);
 
@@ -182,7 +182,7 @@ class Transaction {
    *   The Merchant object.
    */
   public function getMerchant() {
-    return $this->_merchant;
+    return $this->merchant;
   }
 
   /**
@@ -194,7 +194,7 @@ class Transaction {
    * @return $this
    */
   public function setMerchant(Merchant $merchant) {
-    $this->_merchant = $merchant;
+    $this->merchant = $merchant;
     return $this;
   }
 
@@ -204,15 +204,15 @@ class Transaction {
    * @return \GuzzleHttp\Client
    *   The client.
    */
-  protected function _getClient() {
-    if (!isset($this->_client)) {
-      $baseUrl = $this->_getBaseUrl();
-      $this->_client = new Client([
+  protected function getClient() {
+    if (!isset($this->client)) {
+      $baseUrl = $this->getBaseUrl();
+      $this->client = new Client([
         'base_uri' => $baseUrl,
         'timeout' => 2.0,
       ]);
     }
-    return $this->_client;
+    return $this->client;
   }
 
   /**
@@ -221,8 +221,8 @@ class Transaction {
    * @return string
    *   The base url.
    */
-  protected function _getBaseUrl() {
-    return $this->_isTestEnvironment ? self::ENDPOINT_URL_TEST : self::ENDPOINT_URL_PROD;
+  protected function getBaseUrl() {
+    return $this->isTestEnvironment ? self::ENDPOINT_URL_TEST : self::ENDPOINT_URL_PROD;
   }
 
   /**
@@ -232,7 +232,7 @@ class Transaction {
    *   The Request.
    */
   public function getRequest() {
-    return $this->_request;
+    return $this->request;
   }
 
   /**
@@ -244,7 +244,7 @@ class Transaction {
    * @return $this
    */
   public function setRequest(Request $request) {
-    $this->_request = $request;
+    $this->request = $request;
     return $this;
   }
 
@@ -258,7 +258,7 @@ class Transaction {
    * @throws \NetsSdk\Exceptions\NetsException
    */
   public function authorize() {
-    return $this->_runOperation('AUTH');
+    return $this->runOperation('AUTH');
   }
 
   /**
@@ -273,8 +273,8 @@ class Transaction {
    * @throws \GuzzleHttp\Exception\GuzzleException
    * @throws \NetsSdk\Exceptions\NetsException
    */
-  protected function _runOperation(string $operation) {
-    return $this->_performRequest('Process', [
+  protected function runOperation(string $operation) {
+    return $this->performRequest('Process', [
       'transactionId' => $this->transactionId,
       'operation' => $operation,
     ]);
@@ -290,7 +290,7 @@ class Transaction {
    * @throws \NetsSdk\Exceptions\NetsException
    */
   public function capture() {
-    return $this->_runOperation("CAPTURE");
+    return $this->runOperation("CAPTURE");
   }
 
   /**
@@ -324,7 +324,7 @@ class Transaction {
    * @throws \NetsSdk\Exceptions\NetsException
    */
   public function query() {
-    return $this->_performRequest('Query', [
+    return $this->performRequest('Query', [
       'transactionId' => $this->transactionId,
     ], 'GET', TRUE);
   }
@@ -358,7 +358,7 @@ class Transaction {
     $merchantId = $this->getMerchant()->getMerchantId();
     $transactionId = $this->getTransactionId();
 
-    return $this->_getBaseUrl() . "/Terminal/default.aspx?merchantId=${merchantId}&transactionId=${transactionId}";
+    return $this->getBaseUrl() . "/Terminal/default.aspx?merchantId=${merchantId}&transactionId=${transactionId}";
   }
 
   /**

@@ -9,7 +9,7 @@
         
         // Merchant+Token comes from Merchant Object
 
-        protected $_transactionId;
+        protected $transactionId;
 
         //https://shop.nets.eu/web/partners/register
         
@@ -26,7 +26,7 @@
         public $currencyCode;
         
         /* Internal props */
-        protected $_price;
+        protected $price;
         
         
         // need; AMOUNT and CURRENCY CODE as public. Derive from price.
@@ -43,7 +43,7 @@
          * @return String
          */
         public function getTransactionId() {
-            return $this->_transactionId;
+            return $this->transactionId;
         }
         
         /**
@@ -60,7 +60,7 @@
          * @return Price
          */
         public function getPrice(){
-            return $this->_price;
+            return $this->price;
         }
 
         public function getCustomerFirstName() {
@@ -95,7 +95,7 @@
          * @return $this
          */
         public function setTransactionId($transactionId) {
-            $this->_transactionId = $transactionId;
+            $this->transactionId = $transactionId;
             return $this;
         }
 
@@ -119,7 +119,7 @@
          * @return $this
          */
         public function setPrice(Price $price){
-            $this->_price = $price;
+            $this->price = $price;
             $this->amount = $price->getStrippedDecimalInteger();
             $this->currencyCode = $price->getCurrency();
             return $this;

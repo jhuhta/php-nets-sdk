@@ -6,6 +6,7 @@ This plan is to launch this as a composer package, so stay tuned for that to hap
 
 Something broken, or not working as expected? Feel free to contribute and submit a PR 🥰
 
+**Note!** Not API compatible with `steffenz/php-nets-sdk` anymore.
 
 ## Getting started
 
@@ -80,12 +81,12 @@ $transaction = new Transaction($merchant, false, $transactionId, $isTestEnvironm
 $isAuthorized = $transaction->isAuthorized();
 
 /* Authorize transaction if it hasn't been done already */
-if(!$transaction->isAuthorized()){
+if (!$transaction->isAuthorized()){
     $transaction->authorize();
 }
 
 /* If nothing is captured - we'll capture too */
-if($transaction->getCapturedAmount() < 1){
+if ($transaction->getCapturedAmount() < 1){
     $transaction->capture();
 }
 
@@ -95,10 +96,7 @@ $transaction = $transaction->query();
 ```
 
 ## Requirements
-
 Requires PHP 7.
 
 ## Useful resources
-https://www.youtube.com/watch?v=ewRjZoRtu0Y&t=56
-
 https://blog.jgrossi.com/2013/creating-your-first-composer-packagist-package/

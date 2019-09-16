@@ -1,7 +1,7 @@
 <?php
 
-namespace NetsSdk\Exceptions;
+namespace NetsSdk\Exceptions\BBSExceptions;
 
-use NetsSdk\Exceptions\NetsExceptionTemplate;
+use NetsSdk\Exceptions\BBSException;
 
 class IssuerRefusedInvalidSecurityCodeException extends BBSException { }

@@ -41,10 +41,14 @@ use NetsSdk\Exceptions\UniqueTransactionIdException;
 use NetsSdk\Exceptions\ValidationException;
 
 /**
+ * Class ExceptionResolver.
+ *
  * Tries to figure out what exception occured, and throws a proper exception
  * that can be handled. Exceptions has been implemented based on the
  * documentation (which might change)
  * https://shop.nets.eu/web/partners/exceptions
+ *
+ * This class doesn't instantiate but throws a resolved exception instead.
  */
 class ExceptionResolver {
 
@@ -104,7 +108,7 @@ class ExceptionResolver {
         break;
 
       case 'BBSException':
-        return $this->_resolveBbsException($rawXmlStringFromApi);
+        return $this->resolveBbsException($rawXmlStringFromApi);
         break;
 
       case 'GenericError':
@@ -146,7 +150,7 @@ class ExceptionResolver {
    * possible. Exceptions and responses are based of the documentation (which
    * might change) https://shop.nets.eu/web/partners/response-codes
    */
-  protected function _resolveBbsException($error) {
+  protected function resolveBbsException($error) {
     $e = NULL;
     $parsedError = simplexml_load_string($error);
     $msg = $parsedError->Error->Message->__toString();

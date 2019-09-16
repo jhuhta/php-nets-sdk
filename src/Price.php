@@ -4,8 +4,8 @@ namespace NetsSdk;
 
 class Price {
     
-    protected $_amount;
-    protected $_currency;
+    protected $amount;
+    protected $currency;
     
     public function __construct($amount = false, $currency = false){
         if($amount)   { $this->setAmount($amount); }
@@ -14,11 +14,11 @@ class Price {
     
     
     public function getAmount() {
-        return $this->_amount;
+        return $this->amount;
     }
 
     public function getCurrency() {
-        return $this->_currency;
+        return $this->currency;
     }
     
     /**
@@ -30,12 +30,12 @@ class Price {
      * @return $this
      */
     public function setAmount($amount) {
-        $this->_amount = floatval($amount);
+        $this->amount = floatval($amount);
         return $this;
     }
 
     public function setCurrency($currency) {
-        $this->_currency = $currency;
+        $this->currency = $currency;
         return $this;
     }
     
