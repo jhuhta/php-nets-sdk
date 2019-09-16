@@ -11,7 +11,6 @@ class BBSException extends NetsException {
     public $responseText;
     public $responseSrc;
     public $transactionId;
-    public $executionTime;
     public $merchantId;
     public $messageId;
 

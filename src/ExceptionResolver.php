@@ -4,34 +4,7 @@ namespace NetsSdk;
 
 use DomDocument;
 use NetsSdk\Exceptions\AuthenticationException;
-use NetsSdk\Exceptions\BBSExceptions\CardExpiredException;
-use NetsSdk\Exceptions\BBSExceptions\DeniedBy3DSecureAuthenticationException;
-use NetsSdk\Exceptions\BBSExceptions\GenericException as BBSGenericException;
-use NetsSdk\Exceptions\BBSExceptions\InternalFailureException;
-use NetsSdk\Exceptions\BBSExceptions\InvalidAmountException;
-use NetsSdk\Exceptions\BBSExceptions\InvalidCardNumberException;
-use NetsSdk\Exceptions\BBSExceptions\InvalidKidException;
-use NetsSdk\Exceptions\BBSExceptions\InvalidTransactionException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedConfigIssuesContactNetaxeptException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedContactIssuerException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedFormatErrorException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedInvalidMerchantException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedInvalidSecurityCodeException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedLateResponseTryAgainException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedNoCardRecordException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedNoCheckingAccountException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedSystemMalfunctionException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTemporarilyUnavailableException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTransactionNotPermittedException;
-use NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTryAgainException;
-use NetsSdk\Exceptions\BBSExceptions\NoTransactionException;
-use NetsSdk\Exceptions\BBSExceptions\OriginalTransactionRejectedException;
-use NetsSdk\Exceptions\BBSExceptions\TransactionAlreadyProcessedException;
-use NetsSdk\Exceptions\BBSExceptions\TransactionAlreadyReversedException;
-use NetsSdk\Exceptions\BBSExceptions\TransactionNotFoundException;
-use NetsSdk\Exceptions\BBSExceptions\TransactionReachedMerchantTimoutException;
-use NetsSdk\Exceptions\BBSExceptions\UnknownBBSException;
+use NetsSdk\Exceptions\BBSException;
 use NetsSdk\Exceptions\GenericException;
 use NetsSdk\Exceptions\MerchantTranslationException;
 use NetsSdk\Exceptions\NotSupportedException;
@@ -59,33 +32,6 @@ class ExceptionResolver {
    *   The XML response string.
    *
    * @throws \NetsSdk\Exceptions\AuthenticationException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\CardExpiredException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\DeniedBy3DSecureAuthenticationException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\GenericException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\InternalFailureException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidAmountException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidCardNumberException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidKidException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\InvalidTransactionException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedConfigIssuesContactNetaxeptException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedContactIssuerException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedFormatErrorException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedInvalidMerchantException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedLateResponseTryAgainException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedNoCardRecordException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedNoCheckingAccountException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedSystemMalfunctionException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTemporarilyUnavailableException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTransactionNotPermittedException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\IssuerRefusedTryAgainException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\NoTransactionException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\OriginalTransactionRejectedException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionAlreadyProcessedException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionAlreadyReversedException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionNotFoundException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\TransactionReachedMerchantTimoutException
-   * @throws \NetsSdk\Exceptions\BBSExceptions\UnknownBBSException
    * @throws \NetsSdk\Exceptions\MerchantTranslationException
    * @throws \NetsSdk\Exceptions\NotSupportedException
    * @throws \NetsSdk\Exceptions\QueryException
@@ -93,54 +39,49 @@ class ExceptionResolver {
    * @throws \NetsSdk\Exceptions\UniqueTransactionIdException
    * @throws \NetsSdk\Exceptions\ValidationException
    * @throws \NetsSdk\Exceptions\GenericException
+   * @throws \NetsSdk\Exceptions\BBSException
    */
   public function __construct($rawXmlStringFromApi) {
     $dom = new DomDocument();
     $dom->loadXml($rawXmlStringFromApi);
-    $error = $dom->getElementsByTagName("Error")->item(0); // Error tag
-    $type = $error->attributes->getNamedItem('type')->value; // Error tag's type attribute.
-    $msg = $error->getElementsByTagName('Message')
-      ->item(0)->nodeValue; // Message
+    // Error tag
+    $error = $dom->getElementsByTagName("Error")->item(0);
+    // Error tag's type attribute.
+    $type = $error->attributes->getNamedItem('type')->value;
+    // Message.
+    $message = $error->getElementsByTagName('Message')->item(0)->nodeValue;
 
     switch ($type) {
       case 'AuthenticationException':
-        throw new AuthenticationException($msg);
-        break;
+        throw new AuthenticationException($message);
 
       case 'BBSException':
-        return $this->resolveBbsException($rawXmlStringFromApi);
+        $this->resolveBbsException($rawXmlStringFromApi);
         break;
 
       case 'GenericError':
-        throw new GenericException($msg);
-        break;
+        throw new GenericException($message);
 
       case 'MerchantTranslationException':
-        throw new MerchantTranslationException($msg);
-        break;
+        throw new MerchantTranslationException($message);
 
       case 'NotSupportedException':
-        throw new NotSupportedException($msg);
-        break;
+        throw new NotSupportedException($message);
 
       case 'SecurityException':
-        throw new SecurityException($msg);
-        break;
+        throw new SecurityException($message);
 
       case 'UniqueTransactionIdException':
-        throw new UniqueTransactionIdException($msg);
-        break;
+        throw new UniqueTransactionIdException($message);
 
       case 'ValidationException':
-        throw new ValidationException($msg);
-        break;
+        throw new ValidationException($message);
 
       case 'QueryException':
-        throw new QueryException($msg);
-        break;
+        throw new QueryException($message);
 
       default:
-        throw new GenericException($msg);
+        throw new GenericException($message);
     }
 
   }
@@ -149,164 +90,19 @@ class ExceptionResolver {
    * Handles the various BBSExceptions and tries to serve as much details as
    * possible. Exceptions and responses are based of the documentation (which
    * might change) https://shop.nets.eu/web/partners/response-codes
+   *
+   * We're not differentiating between BBSException types, as the error codes
+   * overlap and we're not able to reliably resolve the correct code.
+   *
+   * @throws \NetsSdk\Exceptions\BBSException
    */
   protected function resolveBbsException($error) {
-    $e = NULL;
     $parsedError = simplexml_load_string($error);
-    $msg = $parsedError->Error->Message->__toString();
+    $message = sprintf('%s: %s', $parsedError->Error->Message->__toString(),
+      $parsedError->Error->Result->ResponseText->__toString());
     $code = $parsedError->Error->Result->ResponseCode->__toString();
     $result = $parsedError->Error->Result;
-
-    switch ($result->ResponseCode) {
-      case '14':
-        $e = new InvalidCardNumberException($msg, $code);
-        break;
-
-      case '25':
-        $e = new TransactionNotFoundException($msg, $code);
-        break;
-
-      case '30':
-        $e = new InvalidKidException($msg, $code);
-        break;
-
-      case '84':
-        $e = new OriginalTransactionRejectedException($msg, $code);
-        break;
-
-      case '86':
-        $e = new TransactionAlreadyReversedException($msg, $code);
-        break;
-
-      case '96':
-        $e = new InternalFailureException($msg, $code);
-        break;
-
-      case '97':
-        $e = new NoTransactionException($msg, $code);
-        break;
-
-      case '98':
-        $e = new TransactionAlreadyProcessedException($msg, $code);
-        break;
-
-      case '99':
-        $e = new BBSGenericException($msg, $code);
-        break;
-
-      case 'MZ':
-        $e = new DeniedBy3DSecureAuthenticationException($msg, $code);
-        break;
-
-      case 'T1':
-        $e = new TransactionReachedMerchantTimoutException($msg, $code);
-        break;
-
-      case '01':
-      case '02':
-      case '41':
-      case '43':
-      case '51':
-      case '59':
-      case '61':
-      case '62':
-      case '93':
-        $e = new IssuerRefusedContactIssuerException($msg, $code);
-        break;
-
-      case 03:
-        $e = new IssuerRefusedInvalidMerchantException($msg, $code);
-        break;
-
-      case '04':
-      case '05':
-      case '06':
-      case '07':
-      case '08':
-      case '09':
-      case '10':
-      case '14':
-      case '15':
-      case '25':
-      case '34':
-      case '35':
-      case '36':
-      case '37':
-      case '60':
-      case '78':
-      case '79':
-      case '80':
-      case 'C9':
-      case 'N0':
-      case 'P1':
-      case 'P9':
-      case 'T3':
-      case 'T8':
-        $e = new IssuerRefusedException($msg, $code);
-        break;
-
-      case '12':
-      case '39':
-      case '77':
-        $e = new InvalidTransactionException($msg, $code);
-        break;
-
-      case '13':
-        $e = new InvalidAmountException($msg, $code);
-        break;
-
-      case '19':
-        $e = new IssuerRefusedTryAgainException($msg, $code);
-        break;
-
-      case '30':
-        $e = new IssuerRefusedFormatErrorException($msg, $code);
-        break;
-
-      case '33':
-      case '54':
-        $e = new CardExpiredException($msg, $code);
-        break;
-
-      case '52':
-        $e = new IssuerRefusedNoCheckingAccountException($msg, $code);
-        break;
-
-      case '56':
-        $e = new IssuerRefusedNoCardRecordException($msg, $code);
-        break;
-
-      case '57':
-        $e = new IssuerRefusedTransactionNotPermittedException($msg, $code);
-        break;
-
-      case '68':
-        $e = new IssuerRefusedLateResponseTryAgainException($msg, $code);
-        break;
-
-      case '86':
-        $e = new IssuerRefusedConfigIssuesContactNetaxeptException($msg, $code);
-        break;
-
-      case '91':
-      case '92':
-      case '95':
-        $e = new IssuerRefusedTemporarilyUnavailableException($msg, $code);
-        break;
-
-      case '96';
-        $e = new IssuerRefusedSystemMalfunctionException($msg, $code);
-        break;
-
-      case 'N7':
-        $e = new IssuerRefusedInvalidSecurityCodeException($msg, $code);
-        break;
-
-      default:
-        $e = new UnknownBBSException($msg, $code);
-        break;
-
-    }
+    $e = new BBSException($message, $code);
     $e->setPropertiesFromXml($result);
     throw $e;
   }
