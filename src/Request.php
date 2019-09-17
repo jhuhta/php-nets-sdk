@@ -98,6 +98,13 @@ class Request {
   protected $price;
 
   /**
+   * The payment method action list.
+   *
+   * @var array
+   */
+  protected $paymentMethodActionList;
+
+  /**
    * Gets the transaction id.
    *
    * Transaction ID is a unique ID identifying each transaction within the
@@ -334,6 +341,29 @@ class Request {
   public function setLanguage(string $language) {
     $this->language = $language;
     return $this;
+  }
+
+  /**
+   * Sets the payment method action list.
+   *
+   * @param array $methodActionList
+   *   The list.
+   *
+   * @return $this
+   */
+  public function setPaymentMethodActionList(array $methodActionList) {
+    $this->paymentMethodActionList = $methodActionList;
+    return $this;
+  }
+
+  /**
+   * Gets the payment method action list.
+   *
+   * @return array
+   *   The payment method action list array.
+   */
+  public function getPaymentMethodActionList() {
+    return $this->paymentMethodActionList;
   }
 
   /**
