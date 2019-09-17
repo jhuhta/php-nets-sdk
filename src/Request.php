@@ -2,6 +2,8 @@
 
 namespace NetsSdk;
 
+use NetsSdk\Exceptions\GenericException;
+
 /**
  * Class Request.
  *
@@ -68,7 +70,7 @@ class Request {
   /**
    * The currency code..
    *
-   * Not to be accessed directly, but through the price property..
+   * Not to be accessed directly, but through the price property.
    *
    * @var string
    */
@@ -175,9 +177,16 @@ class Request {
    * @return $this
    */
   public function setPrice(Price $price) {
+    if ($price === NULL) {
+      throw new GenericException('Tried to set null price for a Request.');
+    }
     $this->price = $price;
     $this->amount = $price->getStrippedDecimalInteger();
-    $this->currencyCode = $price->getCurrency();
+    $currency = $price->getCurrency();
+    if ($currency === NULL) {
+      throw new GenericException('Price must have a currency set.');
+    }
+    $this->currencyCode = $currency->getCurrencyCode();
     return $this;
   }
 
