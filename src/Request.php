@@ -182,11 +182,7 @@ class Request {
     }
     $this->price = $price;
     $this->amount = $price->getStrippedDecimalInteger();
-    $currency = $price->getCurrency();
-    if ($currency === NULL) {
-      throw new GenericException('Price must have a currency set.');
-    }
-    $this->currencyCode = $currency->getCurrencyCode();
+    $this->currencyCode = $price->getCurrency();
     return $this;
   }
 

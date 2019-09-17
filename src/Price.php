@@ -2,8 +2,6 @@
 
 namespace NetsSdk;
 
-use Commercie\Currency\CurrencyInterface;
-
 /**
  * The Price class.
  */
@@ -19,7 +17,7 @@ class Price {
   /**
    * The currency of this price.
    *
-   * @var \Commercie\Currency\CurrencyInterface
+   * @var string
    */
   protected $currency;
 
@@ -28,10 +26,10 @@ class Price {
    *
    * @param float $amount
    *   The amount.
-   * @param \Commercie\Currency\CurrencyInterface $currency
+   * @param string $currency
    *   The currency.
    */
-  public function __construct($amount = FALSE, CurrencyInterface $currency = NULL) {
+  public function __construct($amount = FALSE, string $currency = '') {
     if ($amount) {
       $this->setAmount($amount);
     }
@@ -43,7 +41,7 @@ class Price {
   /**
    * Gets the currency of this price.
    *
-   * @return \Commercie\Currency\CurrencyInterface
+   * @return string
    *   The currency of this price.
    */
   public function getCurrency() {
@@ -53,12 +51,12 @@ class Price {
   /**
    * Sets the currency code.
    *
-   * @param \Commercie\Currency\CurrencyInterface $currency
+   * @param string $currency
    *   The currency object.
    *
    * @return $this
    */
-  public function setCurrency(CurrencyInterface $currency) {
+  public function setCurrency(string $currency) {
     $this->currency = $currency;
     return $this;
   }

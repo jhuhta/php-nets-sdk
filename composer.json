@@ -15,7 +15,6 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "commercie/currency": "dev-master",
         "guzzlehttp/guzzle": "^6.3@dev",
         "ext-simplexml": "*",
         "ext-dom": "*",

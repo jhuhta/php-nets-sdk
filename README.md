@@ -15,7 +15,6 @@ Before you can capture some precious dough, you need to create and register a tr
 
 ```php
 use NetsSdk\Merchant;
-use NetsSdk\Currencies;
 use NetsSdk\Price;
 use NetsSdk\Request;
 use NetsSdk\Transaction;
@@ -29,7 +28,7 @@ $merchant->setMerchantId("")
 /* Create a new price object with your desired currency. */
 $price = new Price();
 $price->setAmount(13.37)
-      ->setCurrency(Currencies::NorwegianKrone)
+      ->setCurrency('EUR')
 
 /* Create new request object */
 $request = new Request();
