@@ -68,7 +68,7 @@ class Request {
   protected $amount;
 
   /**
-   * The currency code..
+   * The currency code.
    *
    * Not to be accessed directly, but through the price property.
    *

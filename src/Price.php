@@ -71,7 +71,7 @@ class Price {
    *   The int amount, with decimal dot stripped away.
    */
   public function getStrippedDecimalInteger() {
-    return (int) str_replace('.', '', $this->getAmount());
+    return (int) str_replace('.', '', sprintf('%.2f', $this->getAmount()));
   }
 
   /**
