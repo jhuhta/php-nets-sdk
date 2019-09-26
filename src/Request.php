@@ -105,6 +105,16 @@ class Request {
   protected $paymentMethodActionList;
 
   /**
+   * The transaction reference number.
+   *
+   * @var string
+   *
+   * @see https://shop.nets.eu/web/partners/register
+   * @see https://shop.nets.eu/web/partners/transaction-reference
+   */
+  protected $transactionReconRef;
+
+  /**
    * Gets the transaction id.
    *
    * Transaction ID is a unique ID identifying each transaction within the
@@ -364,6 +374,31 @@ class Request {
    */
   public function getPaymentMethodActionList() {
     return $this->paymentMethodActionList;
+  }
+
+  /**
+   * Sets the reference number.
+   *
+   * @param string $referenceNumber
+   *   The reference number.
+   *
+   * @return $this
+   *
+   * @see https://shop.nets.eu/web/partners/transaction-reference
+   */
+  public function setReferenceNumber(string $referenceNumber) {
+    $this->transactionReconRef = $referenceNumber;
+    return $this;
+  }
+
+  /**
+   * Gets the reference number.
+   *
+   * @return string
+   *   The reference number.
+   */
+  public function getReferenceNumber() {
+    return $this->transactionReconRef;
   }
 
   /**
