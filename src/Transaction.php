@@ -56,6 +56,13 @@ class Transaction {
   protected $isTestEnvironment = FALSE;
 
   /**
+   * Whether we want to use the Nets mobile UI or not.
+   *
+   * @var bool
+   */
+  protected $isMobile = FALSE;
+
+  /**
    * Creates a new transaction.
    *
    * You can optionally pass merchant and request to the constructor.
@@ -119,6 +126,29 @@ class Transaction {
    */
   public function isTestEnvironment() {
     return $this->isTestEnvironment;
+  }
+
+  /**
+   * Enables the Nets mobile UI for the terminal.
+   *
+   * @param bool $isMobile
+   *   Whether we want it to be mobile or not.
+   *
+   * @return $this
+   */
+  public function setMobile(bool $isMobile) {
+    $this->isMobile = $isMobile;
+    return $this;
+  }
+
+  /**
+   * Gets the mobile UI flag.
+   *
+   * @return bool
+   *   Whether we want it to be mobile or not.
+   */
+  public function isMobile() {
+    return $this->isMobile;
   }
 
   /**
@@ -358,7 +388,14 @@ class Transaction {
     $merchantId = $this->getMerchant()->getMerchantId();
     $transactionId = $this->getTransactionId();
 
-    return $this->getBaseUrl() . "/Terminal/default.aspx?merchantId=${merchantId}&transactionId=${transactionId}";
+    if ($this->isMobile) {
+      $urlPath = "/Terminal/mobile/default.aspx";
+    }
+    else {
+      $urlPath = "/Terminal/default.aspx";
+    }
+
+    return $this->getBaseUrl() . "${urlPath}?merchantId=${merchantId}&transactionId=${transactionId}";
   }
 
   /**
