@@ -115,6 +115,35 @@ class Request {
   protected $transactionReconRef;
 
   /**
+   * Indicates which kind of recurring transaction to create.
+   *
+   * Valid values are 'S' and 'R'.
+   *
+   * @var string
+   *
+   * @see https://shop.nets.eu/web/partners/register
+   */
+  protected $recurringType;
+
+  /**
+   * Indicates how often the merchant is allowed to make withdrawals, in days.
+   *
+   * @var string
+   *
+   * @see https://shop.nets.eu/web/partners/register
+   */
+  protected $recurringFrequency;
+
+  /**
+   * The expiry date of the recurring deal, in YYYYMMDD.
+   *
+   * @var string
+   *
+   * @see https://shop.nets.eu/web/partners/register
+   */
+  protected $recurringExpiryDate;
+
+  /**
    * Gets the transaction id.
    *
    * Transaction ID is a unique ID identifying each transaction within the
@@ -399,6 +428,77 @@ class Request {
    */
   public function getReferenceNumber() {
     return $this->transactionReconRef;
+  }
+
+  /**
+   * Sets the recurring type.
+   *
+   * @param string $recurringType
+   *   The recurring type, either 'S' or 'R'.
+   *
+   * @return $this
+   *
+   * @see https://shop.nets.eu/web/partners/register
+   */
+  public function setRecurringType(string $recurringType) {
+    $this->recurringType = $recurringType;
+    return $this;
+  }
+
+  /**
+   * Gets the recurring type.
+   *
+   * @return string
+   *   The recurring type.
+   */
+  public function getRecurringType() {
+    return $this->recurringType;
+  }
+
+  /**
+   * Sets the minimum allowed frequency for recurring payments.
+   *
+   * @param string $frequency
+   *   The frequency, in days: 0-365.
+   *
+   * @return $this
+   */
+  public function setRecurringFrequency(string $frequency) {
+    $this->recurringFrequency = $frequency;
+    return $this;
+  }
+
+  /**
+   * Gets the minimum allowed frequency for recurring payments.
+   *
+   * @return string
+   *   The frequency in days.
+   */
+  public function getRecurringFrequency() {
+    return $this->recurringFrequency;
+  }
+
+  /**
+   * The end date of the recurring agreement between merchant and the customer.
+   *
+   * @param string $date
+   *   The date, in YYYYMMDD format.
+   *
+   * @return $this
+   */
+  public function setRecurringExpiryDate(string $date) {
+    $this->recurringExpiryDate = $date;
+    return $this;
+  }
+
+  /**
+   * The end date of the recurring agreement between merchant and the customer.
+   *
+   * @return string
+   *   The date.
+   */
+  public function getRecurringExpiryDate() {
+    return $this->recurringExpiryDate;
   }
 
   /**
