@@ -137,7 +137,7 @@ class Request {
   /**
    * The expiry date of the recurring deal, in YYYYMMDD.
    *
-   * @var string
+   * @var int
    *
    * @see https://shop.nets.eu/web/partners/register
    */
@@ -496,7 +496,7 @@ class Request {
    * @return $this
    */
   public function setRecurringExpiryDate(string $date) {
-    $this->recurringExpiryDate = $date;
+    $this->recurringExpiryDate = (int) $date;
     return $this;
   }
 
@@ -507,7 +507,7 @@ class Request {
    *   The date.
    */
   public function getRecurringExpiryDate() {
-    return $this->recurringExpiryDate;
+    return (string) $this->recurringExpiryDate;
   }
 
   /**
