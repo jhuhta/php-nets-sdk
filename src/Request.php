@@ -144,6 +144,15 @@ class Request {
   protected $recurringExpiryDate;
 
   /**
+   * Set single page terminal.
+   *
+   * @var string
+   *
+   * @see https://shop.nets.eu/web/partners/register
+   */
+  protected $terminalSinglePage;
+
+  /**
    * Gets the transaction id.
    *
    * Transaction ID is a unique ID identifying each transaction within the
@@ -499,6 +508,37 @@ class Request {
    */
   public function getRecurringExpiryDate() {
     return $this->recurringExpiryDate;
+  }
+
+  /**
+   * Sets the terminal single page toggle.
+   *
+   * @param bool $singlePage
+   *   The value.
+   *
+   * @return $this
+   */
+  public function setTerminalSinglePage(bool $singlePage) {
+    if ($singlePage) {
+      $this->terminalSinglePage = 'true';
+    }
+    else {
+      unset($this->terminalSinglePage);
+    }
+    return $this;
+  }
+
+  /**
+   * Check if the terminal is set to single page.
+   *
+   * @return bool
+   *   Boolean indicating whether the terminal is set to single page.
+   */
+  public function getTerminalSinglePage() {
+    if ($this->terminalSinglePage === 'true') {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
