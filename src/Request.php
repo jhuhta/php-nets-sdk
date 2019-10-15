@@ -98,9 +98,9 @@ class Request {
   protected $price;
 
   /**
-   * The payment method action list.
+   * The payment method action list, as a json decoded string.
    *
-   * @var array
+   * @var string
    */
   protected $paymentMethodActionList;
 
@@ -400,7 +400,7 @@ class Request {
    * @return $this
    */
   public function setPaymentMethodActionList(array $methodActionList) {
-    $this->paymentMethodActionList = $methodActionList;
+    $this->paymentMethodActionList = json_encode($methodActionList);
     return $this;
   }
 
@@ -411,7 +411,7 @@ class Request {
    *   The payment method action list array.
    */
   public function getPaymentMethodActionList() {
-    return $this->paymentMethodActionList;
+    return json_decode($this->paymentMethodActionList);
   }
 
   /**
