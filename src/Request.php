@@ -45,6 +45,41 @@ class Request {
   protected $customerEmail;
 
   /**
+   * The customer address 1;
+   *
+   * @var string
+   */
+  protected $customerAddress1;
+
+  /**
+   * The customer address 2;
+   *
+   * @var string
+   */
+  protected $customerAddress2;
+
+  /**
+   * The customer postal/zip code;
+   *
+   * @var string
+   */
+  protected $customerPostcode;
+
+  /**
+   * The customer town;
+   *
+   * @var string
+   */
+  protected $customerTown;
+
+  /**
+   * The customer country;
+   *
+   * @var string
+   */
+  protected $customerCountry;
+
+  /**
    * The order description.
    *
    * @var string
@@ -230,6 +265,7 @@ class Request {
    *   The Price object.
    *
    * @return $this
+   * @throws \NetsSdk\Exceptions\GenericException
    */
   public function setPrice(Price $price) {
     if ($price === NULL) {
@@ -307,6 +343,121 @@ class Request {
    */
   public function setCustomerEmail($customerEmail) {
     $this->customerEmail = $this->truncate($customerEmail, 128);
+    return $this;
+  }
+
+  /**
+   * Gets the customer address 1.
+   *
+   * @return string
+   *   The address 1.
+   */
+  public function getCustomerAddress1() {
+    return $this->customerAddress1;
+  }
+
+  /**
+   * Sets the customer's address 1.
+   *
+   * @param string $customerAddress1
+   *   The address 1 (Max Length: 64).
+   *
+   * @return $this
+   */
+  public function setCustomerAddress1($customerAddress1) {
+    $this->customerAddress1 = $this->truncate($customerAddress1, 64);
+    return $this;
+  }
+
+  /**
+   * Gets the customer address 2.
+   *
+   * @return string
+   *   The address 2.
+   */
+  public function getCustomerAddress2() {
+    return $this->customerAddress2;
+  }
+
+  /**
+   * Sets the customer's address 2.
+   *
+   * @param string $customerAddress2
+   *   The address 2 (Max Length: 64).
+   *
+   * @return $this
+   */
+  public function setCustomerAddress2($customerAddress2) {
+    $this->customerAddress2 = $this->truncate($customerAddress2, 64);
+    return $this;
+  }
+
+  /**
+   * Gets the customer postal code.
+   *
+   * @return string
+   *   The postal code.
+   */
+  public function getCustomerPostcode() {
+    return $this->customerPostcode;
+  }
+
+  /**
+   * Sets the customer's postal code.
+   *
+   * @param string $customerPostcode
+   *   The postal code (Max Length: 16).
+   *
+   * @return $this
+   */
+  public function setCustomerPostcode($customerPostcode) {
+    $this->customerPostcode = $this->truncate($customerPostcode, 16);
+    return $this;
+  }
+
+  /**
+   * Gets the customer town.
+   *
+   * @return string
+   *   The town.
+   */
+  public function getCustomerTown() {
+    return $this->customerTown;
+  }
+
+  /**
+   * Sets the customer's town.
+   *
+   * @param string $customerTown
+   *   The town (Max Length: 16).
+   *
+   * @return $this
+   */
+  public function setCustomerTown($customerTown) {
+    $this->customerTown = $this->truncate($customerTown, 16);
+    return $this;
+  }
+
+  /**
+   * Gets the customer country.
+   *
+   * @return string
+   *   The country.
+   */
+  public function getCustomerCountry() {
+    return $this->customerCountry;
+  }
+
+  /**
+   * Sets the customer's country.
+   *
+   * @param string $customerCountry
+   *   The country.
+   *
+   * @return $this
+   */
+  public function setCustomerCountry($customerCountry) {
+    $this->customerCountry = $customerCountry;
     return $this;
   }
 
