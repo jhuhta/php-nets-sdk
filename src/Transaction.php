@@ -239,7 +239,7 @@ class Transaction {
       $baseUrl = $this->getBaseUrl();
       $this->client = new Client([
         'base_uri' => $baseUrl,
-        'timeout' => 2.0,
+        'timeout' => 8.0,
       ]);
     }
     return $this->client;
