@@ -186,7 +186,7 @@ class Transaction {
    * @throws \NetsSdk\Exceptions\NetsException
    */
   protected function performRequest(string $endpointName, array $params, string $method = 'POST', $ignoreError = FALSE) {
-    $endpoint = "/Netaxept/${endpointName}.aspx";
+    $endpoint = "/Netaxept/{$endpointName}.aspx";
 
     $paramsWithAuth = array_merge($this->getMerchant()->asArray(), $params);
 
@@ -395,7 +395,7 @@ class Transaction {
       $urlPath = "/Terminal/default.aspx";
     }
 
-    return $this->getBaseUrl() . "${urlPath}?merchantId=${merchantId}&transactionId=${transactionId}";
+    return $this->getBaseUrl() . "{$urlPath}?merchantId={$merchantId}&transactionId={$transactionId}";
   }
 
   /**
